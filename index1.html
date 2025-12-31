@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You | 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #d4af37;
+            --soft-pink: #ffb3c1;
+            /* STRICTLY KEPT CONTAINER COLOR SAME */
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body, html {
+            margin: 0; padding: 0; min-height: 100%;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background: #050507; /* Fallback */
+        }
+        body {
+             padding-bottom: 1px;
+        }
+
+
+        /* --- CLASSY MESH BACKGROUND ANIMATION --- */
+        /* ===== VISIBLE LUXURY BACKGROUND (NO BLACK SCREEN) ===== */
+.bg-wrapper {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(1200px at 10% 10%, rgba(212, 175, 55, 0.25), transparent 45%),
+        radial-gradient(1000px at 90% 20%, rgba(90, 110, 255, 0.25), transparent 45%),
+        radial-gradient(900px at 50% 90%, rgba(255, 179, 193, 0.25), transparent 50%),
+        linear-gradient(180deg, #06060c 0%, #0f1224 50%, #06060c 100%);
+    background-size: 200% 200%;
+    animation: luxuryDrift 16s ease-in-out infinite;
+}
+
+/* Smooth visible movement */
+@keyframes luxuryDrift {
+    0% {
+        background-position: 0% 0%, 100% 0%, 50% 100%, center;
+    }
+    50% {
+        background-position: 20% 20%, 80% 40%, 50% 80%, center;
+    }
+    100% {
+        background-position: 0% 0%, 100% 0%, 50% 100%, center;
+    }
+}
+
+/* Subtle shimmer overlay */
+.bg-wrapper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.06), transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.04), transparent 45%);
+    animation: shimmer 22s linear infinite;
+}
+
+@keyframes shimmer {
+    from { transform: translateY(0); }
+    to { transform: translateY(-60px); }
+}
+
+
+        /* --- CONTAINER STYLE (STRICTLY UNCHANGED) --- */
+        .page {
+            display: none;
+            min-height: 100vh;
+            height: auto;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .active { display: flex; }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 40px;
+            padding: 50px 30px;
+            width: 85%;
+            max-width: 350px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: cardEntrance 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+            height: 80vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .glass-card::-webkit-scrollbar {
+            width: 0;
+        }
+
+
+        @keyframes cardEntrance {
+            0% { opacity: 0; transform: scale(0.5) rotate(-5deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+
+        h1 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 2.5rem; 
+            color: var(--accent);
+            margin-bottom: 15px;
+            animation: revealText 1s forwards 0.5s;
+            opacity: 0;
+        }
+
+        p { 
+            font-weight: 300; 
+            animation: revealText 1s forwards 0.8s;
+            opacity: 0;
+            line-height: 1.8;
+        }
+
+        @keyframes revealText {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-btn {
+            margin-top: 40px;
+            background: white;
+            color: black;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s;
+            opacity: 0;
+            animation: revealText 1s forwards 1.2s;
+        }
+
+        .nav-btn:hover { background: var(--accent); transform: scale(1.05); }
+
+        .confetti {
+            position: fixed;      /* ✅ FIX */
+            top: -10px;
+            width: 8px;
+            height: 8px;
+            animation: fall 4s linear forwards;
+            pointer-events: none;
+        }
+
+        @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+        .card-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+.card-content::-webkit-scrollbar {
+    width: 0;
+}
+.scroll-hint {
+    font-size: 0.75rem;
+    opacity: 0.6;
+    margin-top: 10px;
+    animation: hintPulse 1.8s infinite;
+}
+
+@keyframes hintPulse {
+    0%,100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+}
+
+.card-content {
+    position: relative;
+}
+
+/* Fade overlays */
+.card-content::before,
+.card-content::after {
+    content: "";
+    position: sticky;
+    left: 0;
+    right: 0;
+    height: 25px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.card-content::before {
+    top: 0;
+    background: linear-gradient(to bottom, rgba(5,5,7,0.8), transparent);
+}
+
+.card-content::after {
+    bottom: 0;
+    background: linear-gradient(to top, rgba(5,5,7,0.8), transparent);
+}
+.card-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 6px;
+
+    /* ACTUAL FADE EFFECT */
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 10%,
+        black 90%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 12%,
+        black 90%,
+        transparent 100%
+    );
+}
+.heart {
+    position: absolute;
+    font-size: 18px;
+    color: #ffb3c1;
+    opacity: 0;
+    animation: heartFloat 2.8s ease-out forwards;
+    pointer-events: none;
+    filter: drop-shadow(0 0 6px rgba(255,179,193,0.8));
+}
+
+@keyframes heartFloat {
+    0% {
+        transform: scale(0.3) translateY(0);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.2) translateY(-120px);
+        opacity: 0;
+    }
+}
+
+
+/* Hide scrollbar but keep scrolling */
+.card-content::-webkit-scrollbar {
+    width: 0;
+}
+.sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, #fff, transparent);
+    opacity: 0;
+    animation: sparkleFade 1.5s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes sparkleFade {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(2); }
+}
+#page4 .glass-card {
+    animation: softGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes softGlow {
+    from {
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+    to {
+        box-shadow: 0 25px 70px rgba(212,175,55,0.4);
+    }
+}
+/* =========================
+   PAGE 5 – MOVIE ENDING
+   ========================= */
+
+/* =========================
+   PAGE 5 – FINAL CLEAN FIX
+   ========================= */
+
+/* =========================
+   PAGE 5 – AUTO + MANUAL SCROLL
+   ========================= */
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+
+<div class="bg-wrapper">
+    <div class="dust"></div>
+</div>
+
+<section id="page1" class="page active">
+    <div class="glass-card">
+        <h1>2025...</h1>
+        <div class="card-content">
+            
+
+        <p>
+2025 had its own pace, its own chaos, and its own quiet moments.<br>
+It wasn’t just a year on the calendar,<br>
+it was made of small moments, shared smiles, and gentle comfort,you found your way into it.<br>
+Somewhere in between all of that, you became a part of my daily life in the sweetest way,<br>
+making certain days feel softer and certain moments worth remembering.<br>
+I'm GLAD Mi'Lady.<br>
+Some people are worth melting for, and if I were an iceberg, I'd happily<br>
+consider melting and turning into an ocean, maybe that would tell you<br>
+the depth of my admiration for you. 
+</p>
+</div>
+<div class="scroll-hint">swipe up ↓</div>
+
+        <button class="nav-btn" onclick="showPage(2)">Tap for more.</button>
+    </div>
+</section>
+
+<section id="page2" class="page">
+    <div class="glass-card">
+        <h1>This ones for you, Special One.</h1>
+        <div class="card-content">
+            <div class="scroll-hint">swipe up ↓</div>
+
+       <p>
+Honestly, You were my favourite part since the beginning.<br>
+But somewhere along the way, you just became my favourite habit<br>
+The person I’d look forward to talking to,<br>
+The person I’d wait for replies from,<br>
+The one who could make a regular day feel lighter. And honestly…<br> 
+I don't plan changing that(SO DEAL WITH IT). And yes I blame you for that<br>
+I blame you for making me obssessed with you.<br>
+</p>
+</div>
+<div class="scroll-hint">swipe up ↓</div>
+
+        <button class="nav-btn" onclick="showPage(3)">One More Thing</button>
+    </div>
+</section>
+
+<section id="page3" class="page">
+    <div class="glass-card">
+        <h1>Nothing dramatic, Just being honest.</h1>
+     <div class="card-content"> 
+        <div class="scroll-hint">swipe up ↓</div>
+  
+<p>
+I know some things weren’t perfect,<br>
+but even so, this has always been true.<br>
+No matter how things change or stay the same, you will always have me <br>
+quietly rooting for you.<br>
+Someone who smiles at your wins,<br>
+and believes in you even on the days you doubt yourself.<br>
+And, secretly —okay, not so secretly —<br>
+I admire and adore you deeply, and I always will.<br>
+I’ll always be cheering for you — quietly, sincerely.<br>
+Mi'Ladyyy.
+</p>
+</div>
+<div class="scroll-hint">swipe up ↓</div>
+
+        <button class="nav-btn" onclick="showPage(4)">Step into 2026</button>
+    </div>
+</section>
+
+<section id="page4" class="page">
+    <div class="glass-card">
+        <h1 style="font-size: 3.5rem;">2026</h1>
+        <div class="card-content">
+            <div class="scroll-hint">swipe up ↓</div>
+
+      <p>
+Happy New Year!<br>
+2026 begins, and honestly, it’s mostly about you.<br>
+Your wins, your growth, and all the good things you’re quietly becoming.<br><br>
+
+I’ll be right there, probably cheering a little too proudly, as usual.<br>
+As for us… no big plans and no pressure,<br>
+just shared smiles, inside jokes,<br>
+and conversations that aren’t forced and somehow make time pass faster than it should.<br><br>
+
+Here’s to 2026 — doing its thing for you,<br>
+and letting us exist comfortably somewhere in between.<br>
+Whatever this year decides to bring,<br>
+I hope it surprises you in the nicest ways.<br><br>
+
+I hope you laugh a little louder, dream a little bigger,<br>
+and realize—more often than not—how special you truly are.<br><br>
+
+And if somewhere along the way<br>
+there are moments meant to be shared,<br>
+I’d like us to keep showing up for those.<br>
+No pressure. Just us, being us.<br><br>
+
+I promise I won’t overthink it.<br>
+(Okay… maybe just a little.)<br><br>
+
+Yeah… this already feels like a pretty good year, doesn’t it?<br>
+SWEETHEART!<br>
+Yeah… I think 2026 might be kind to us.<br>
+And yeah… I’m really glad you’re here.
+</p>
+
+</div>
+<div class="scroll-hint">swipe up ↓</div>
+
+        <button class="nav-btn" onclick="showPage(1)">❤</button>
+    </div>
+</section>
+
+
+
+
+<script>
+function showPage(num) {
+    // Switch pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const page = document.getElementById('page' + num);
+    page.classList.add('active');
+
+    // Reset page scroll
+    document.documentElement.scrollTop = 0;
+
+    // Reset glass-card scroll (pages 1–4)
+    const card = page.querySelector('.glass-card');
+    if (card) card.scrollTop = 0;
+
+    // Page 4 fireworks
+    if (num === 4) {
+        heartFireworks();
+    }
+
+    // Page 5 cinematic logic
+    
+}
+
+function heartFireworks() {
+    const container = document.getElementById('page4');
+
+    for (let i = 0; i < 18; i++) {
+        setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤';
+
+            const x = Math.random() * 80 + 10;
+            const y = Math.random() * 40 + 40;
+
+            heart.style.left = x + 'vw';
+            heart.style.top = y + 'vh';
+            heart.style.fontSize = (14 + Math.random() * 14) + 'px';
+
+            container.appendChild(heart);
+            for (let j = 0; j < 6; j++) {
+    const sparkle = document.createElement('div');
+    sparkle.className = 'sparkle';
+
+    sparkle.style.left = (x + Math.random() * 4) + 'vw';
+    sparkle.style.top = (y + Math.random() * 4) + 'vh';
+
+    container.appendChild(sparkle);
+
+    setTimeout(() => sparkle.remove(), 1500);
+}
+
+
+            setTimeout(() => heart.remove(), 3000);
+        }, i * 120);
+    }
+}
+
+
+document.querySelectorAll('.card-content').forEach(content => {
+    const hint = content.parentElement.querySelector('.scroll-hint');
+    if (content.scrollHeight <= content.clientHeight) {
+        hint.style.display = 'none';
+    }
+});
+
+</script>
+ 
+
+</body>
+</html>
